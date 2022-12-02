@@ -5,7 +5,7 @@ import grpc
 import final_pb2 as final__pb2
 
 
-class lab6Stub(object):
+class projectStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -15,28 +15,28 @@ class lab6Stub(object):
             channel: A grpc.Channel.
         """
         self.doconvert = channel.unary_unary(
-                '/final.lab6/doconvert',
+                '/final.project/doconvert',
                 request_serializer=final__pb2.convertRequest.SerializeToString,
                 response_deserializer=final__pb2.convertReply.FromString,
                 )
         self.queue = channel.unary_unary(
-                '/final.lab6/queue',
+                '/final.project/queue',
                 request_serializer=final__pb2.queueRequest.SerializeToString,
                 response_deserializer=final__pb2.queueReply.FromString,
                 )
         self.delete = channel.unary_unary(
-                '/final.lab6/delete',
+                '/final.project/delete',
                 request_serializer=final__pb2.deleteRequest.SerializeToString,
                 response_deserializer=final__pb2.deleteReply.FromString,
                 )
         self.doDownload = channel.unary_unary(
-                '/final.lab6/doDownload',
+                '/final.project/doDownload',
                 request_serializer=final__pb2.downloadRequest.SerializeToString,
                 response_deserializer=final__pb2.downloadReply.FromString,
                 )
 
 
-class lab6Servicer(object):
+class projectServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def doconvert(self, request, context):
@@ -64,7 +64,7 @@ class lab6Servicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_lab6Servicer_to_server(servicer, server):
+def add_projectServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'doconvert': grpc.unary_unary_rpc_method_handler(
                     servicer.doconvert,
@@ -88,12 +88,12 @@ def add_lab6Servicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'final.lab6', rpc_method_handlers)
+            'final.project', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class lab6(object):
+class project(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -107,7 +107,7 @@ class lab6(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/final.lab6/doconvert',
+        return grpc.experimental.unary_unary(request, target, '/final.project/doconvert',
             final__pb2.convertRequest.SerializeToString,
             final__pb2.convertReply.FromString,
             options, channel_credentials,
@@ -124,7 +124,7 @@ class lab6(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/final.lab6/queue',
+        return grpc.experimental.unary_unary(request, target, '/final.project/queue',
             final__pb2.queueRequest.SerializeToString,
             final__pb2.queueReply.FromString,
             options, channel_credentials,
@@ -141,7 +141,7 @@ class lab6(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/final.lab6/delete',
+        return grpc.experimental.unary_unary(request, target, '/final.project/delete',
             final__pb2.deleteRequest.SerializeToString,
             final__pb2.deleteReply.FromString,
             options, channel_credentials,
@@ -158,7 +158,7 @@ class lab6(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/final.lab6/doDownload',
+        return grpc.experimental.unary_unary(request, target, '/final.project/doDownload',
             final__pb2.downloadRequest.SerializeToString,
             final__pb2.downloadReply.FromString,
             options, channel_credentials,

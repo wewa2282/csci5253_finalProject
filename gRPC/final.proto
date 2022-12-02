@@ -35,7 +35,7 @@ message downloadReply{
     bytes file = 1;
 }
 
-service lab6 {
+service project {
     rpc doconvert(convertRequest) returns (convertReply);
     rpc queue(queueRequest) returns (queueReply);
     rpc delete(deleteRequest) returns (deleteReply);

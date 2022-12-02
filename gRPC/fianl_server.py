@@ -41,7 +41,7 @@ minioClient = Minio(minioHost,
 app = Flask(__name__)
 
 
-class RouteGuideServicer(lab6_pb2_grpc.lab6Servicer):
+class RouteGuideServicer(final_pb2_grpc.projectServicer):
      def __init__(self) -> None:
         pass
 
@@ -54,8 +54,8 @@ class RouteGuideServicer(lab6_pb2_grpc.lab6Servicer):
 
 def serve():    
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    final__pb2_grpc.add
-    final__pb2_grpc.add_lab6Servicer_to_server(RouteGuideServicer(), server)
+    final_pb2_grpc.add_projectServicer_to_server(RouteGuideServicer(), server)
+    
     server.add_insecure_port('[::]:50051')
     server.start()
     server.wait_for_termination()
