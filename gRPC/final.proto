@@ -1,0 +1,43 @@
+syntax = "proto3";
+package final;
+
+
+message convertRequest {
+    bytes file=1;
+}
+
+  
+message convertReply {
+    string hash=1;
+}
+
+message queueRequest {
+    string hash = 1;
+}
+
+message queueReply {
+    bytes file=1;
+}
+
+message deleteRequest {
+    string hash = 1;
+}
+
+message deleteReply {
+    int32 result=1;
+}
+
+message downloadRequest{
+    string hash = 1;
+}
+
+message downloadReply{
+    bytes file = 1;
+}
+
+service lab6 {
+    rpc doconvert(convertRequest) returns (convertReply);
+    rpc queue(queueRequest) returns (queueReply);
+    rpc delete(deleteRequest) returns (deleteReply);
+    rpc doDownload(downloadRequest) returns (downloadReply);
+}
