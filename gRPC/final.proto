@@ -12,11 +12,11 @@ message convertReply {
 }
 
 message queueRequest {
-    string hash = 1;
+    
 }
 
 message queueReply {
-    bytes file=1;
+    string file=1;
 }
 
 message deleteRequest {
@@ -24,7 +24,7 @@ message deleteRequest {
 }
 
 message deleteReply {
-    int32 result=1;
+     string result=1;
 }
 
 message downloadRequest{

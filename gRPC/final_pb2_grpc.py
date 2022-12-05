@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import final_pb2 as final__pb2
+from csci5253_finalProject.gRPC import final_pb2 as csci5253__finalProject_dot_gRPC_dot_final__pb2
 
 
 class projectStub(object):
@@ -16,23 +16,23 @@ class projectStub(object):
         """
         self.doconvert = channel.unary_unary(
                 '/final.project/doconvert',
-                request_serializer=final__pb2.convertRequest.SerializeToString,
-                response_deserializer=final__pb2.convertReply.FromString,
+                request_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.convertRequest.SerializeToString,
+                response_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.convertReply.FromString,
                 )
         self.queue = channel.unary_unary(
                 '/final.project/queue',
-                request_serializer=final__pb2.queueRequest.SerializeToString,
-                response_deserializer=final__pb2.queueReply.FromString,
+                request_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.queueRequest.SerializeToString,
+                response_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.queueReply.FromString,
                 )
         self.delete = channel.unary_unary(
                 '/final.project/delete',
-                request_serializer=final__pb2.deleteRequest.SerializeToString,
-                response_deserializer=final__pb2.deleteReply.FromString,
+                request_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteRequest.SerializeToString,
+                response_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteReply.FromString,
                 )
         self.doDownload = channel.unary_unary(
                 '/final.project/doDownload',
-                request_serializer=final__pb2.downloadRequest.SerializeToString,
-                response_deserializer=final__pb2.downloadReply.FromString,
+                request_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadRequest.SerializeToString,
+                response_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadReply.FromString,
                 )
 
 
@@ -68,23 +68,23 @@ def add_projectServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'doconvert': grpc.unary_unary_rpc_method_handler(
                     servicer.doconvert,
-                    request_deserializer=final__pb2.convertRequest.FromString,
-                    response_serializer=final__pb2.convertReply.SerializeToString,
+                    request_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.convertRequest.FromString,
+                    response_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.convertReply.SerializeToString,
             ),
             'queue': grpc.unary_unary_rpc_method_handler(
                     servicer.queue,
-                    request_deserializer=final__pb2.queueRequest.FromString,
-                    response_serializer=final__pb2.queueReply.SerializeToString,
+                    request_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.queueRequest.FromString,
+                    response_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.queueReply.SerializeToString,
             ),
             'delete': grpc.unary_unary_rpc_method_handler(
                     servicer.delete,
-                    request_deserializer=final__pb2.deleteRequest.FromString,
-                    response_serializer=final__pb2.deleteReply.SerializeToString,
+                    request_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteRequest.FromString,
+                    response_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteReply.SerializeToString,
             ),
             'doDownload': grpc.unary_unary_rpc_method_handler(
                     servicer.doDownload,
-                    request_deserializer=final__pb2.downloadRequest.FromString,
-                    response_serializer=final__pb2.downloadReply.SerializeToString,
+                    request_deserializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadRequest.FromString,
+                    response_serializer=csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -108,8 +108,8 @@ class project(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/final.project/doconvert',
-            final__pb2.convertRequest.SerializeToString,
-            final__pb2.convertReply.FromString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.convertRequest.SerializeToString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.convertReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -125,8 +125,8 @@ class project(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/final.project/queue',
-            final__pb2.queueRequest.SerializeToString,
-            final__pb2.queueReply.FromString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.queueRequest.SerializeToString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.queueReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -142,8 +142,8 @@ class project(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/final.project/delete',
-            final__pb2.deleteRequest.SerializeToString,
-            final__pb2.deleteReply.FromString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteRequest.SerializeToString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.deleteReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -159,7 +159,7 @@ class project(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/final.project/doDownload',
-            final__pb2.downloadRequest.SerializeToString,
-            final__pb2.downloadReply.FromString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadRequest.SerializeToString,
+            csci5253__finalProject_dot_gRPC_dot_final__pb2.downloadReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

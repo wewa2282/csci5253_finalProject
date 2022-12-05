@@ -19,8 +19,8 @@ class convertRequest(_message.Message):
 class deleteReply(_message.Message):
     __slots__ = ["result"]
     RESULT_FIELD_NUMBER: _ClassVar[int]
-    result: int
-    def __init__(self, result: _Optional[int] = ...) -> None: ...
+    result: str
+    def __init__(self, result: _Optional[str] = ...) -> None: ...
 
 class deleteRequest(_message.Message):
     __slots__ = ["hash"]
@@ -43,11 +43,9 @@ class downloadRequest(_message.Message):
 class queueReply(_message.Message):
     __slots__ = ["file"]
     FILE_FIELD_NUMBER: _ClassVar[int]
-    file: bytes
-    def __init__(self, file: _Optional[bytes] = ...) -> None: ...
+    file: str
+    def __init__(self, file: _Optional[str] = ...) -> None: ...
 
 class queueRequest(_message.Message):
-    __slots__ = ["hash"]
-    HASH_FIELD_NUMBER: _ClassVar[int]
-    hash: str
-    def __init__(self, hash: _Optional[str] = ...) -> None: ...
+    __slots__ = []
+    def __init__(self) -> None: ...
