@@ -3,7 +3,7 @@ package final;
 
 
 message convertRequest {
-    bytes file=1;
+    string file=1;
 }
 
   
@@ -11,9 +11,7 @@ message convertReply {
     string hash=1;
 }
 
-message queueRequest {
-    
-}
+message queueRequest {}
 
 message queueReply {
     string file=1;

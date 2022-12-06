@@ -27,7 +27,6 @@ outpuutBucketName = "output"
 
 workQueue = "toWorker"
 
-redisClient = redis.StrictRedis(host = redisHost,port= redisPort,db=0)
 minioClient = Minio(minioHost,
                secure=False,
                access_key=minioUser,
@@ -43,41 +42,40 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
         pass
     
      def to_worker(self, data, hash):
-            try:
-                r = redis.Redis(host=redisHost, port=redisPort)
-                to_json = {
+        try:
+            r = redis.Redis(host=redisHost, port=redisPort)
+            to_json = {
                 'hash': hash,
                 'data': data
-                }
-                worker_string = jsonpickle.encode(to_json)
-                r.lpush('toWorker', worker_string) 
-                return True 
-            except:
-                return False
+            }
+            worker_string = jsonpickle.encode(to_json)
+            r.lpush('toWorker', worker_string) 
+            return True 
+        except:
+            return False
             
-    def doconvert(self,request,context):
-            with open(request.file) as f:
-                content = f.readlines()
+     def doconvert(self,request,context):
+        content = request.file
                 
-            hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+        hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
             
-            operation = self.to_worker(content, hash) 
+        operation = self.to_worker(content, hash) 
             
-            if operation: 
-                return_hash = {
-                    'hash': hash,
-                    'reason': "File enqueued"
-                }
-            else:
-                hash = {
-                    'hash': 0
-                }
+        if operation: 
+            return_hash = {
+                'hash': hash,
+                'reason': "File enqueued"
+            }
+        else:
+            return_hash = {
+                'hash': 0
+            }
             
-            response_pickled = jsonpickle.encode(return_hash)
-            return final_pb2.convertReply(hash=response_pickled)                
+        response_pickled = jsonpickle.encode(return_hash)
+        return final_pb2.convertReply(hash=response_pickled)                
             
         
-    def queue(self,request,context):
+     def queue(self,request,context):
         queue = []
         
         try:
@@ -86,6 +84,7 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
             for e in r.lrange('toWorker', 0, -1):
                 tmp_dic = jsonpickle.decode(e)
                 queue.append(tmp_dic['hash'])
+
             
             return_dic = {
                 'queue': queue
@@ -96,17 +95,13 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
                 'queue': queue,
                 'error': "There has been an error when getting the queued files"
             }
-        
         response_pickled = jsonpickle.encode(return_dic)
         return final_pb2.queueReply(file=response_pickled) 
-            
+        
+    #def delete(self,request,context):
         
         
-        
-    def delete(self,request,context):
-        
-        
-    def doDownload(self, request, context):
+    #def doDownload(self, request, context):
         
 
     

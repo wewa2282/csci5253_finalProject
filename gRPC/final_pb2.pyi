@@ -13,8 +13,8 @@ class convertReply(_message.Message):
 class convertRequest(_message.Message):
     __slots__ = ["file"]
     FILE_FIELD_NUMBER: _ClassVar[int]
-    file: bytes
-    def __init__(self, file: _Optional[bytes] = ...) -> None: ...
+    file: str
+    def __init__(self, file: _Optional[str] = ...) -> None: ...
 
 class deleteReply(_message.Message):
     __slots__ = ["result"]

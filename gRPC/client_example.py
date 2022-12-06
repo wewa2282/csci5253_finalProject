@@ -21,8 +21,9 @@ channel = grpc.insecure_channel('{}:50051'.format(host))
 stub = final_pb2_grpc.projectStub(channel)
 
 if cmd == 'doConvert':
-    text = open('sample_text.txt', 'r').read()
-    req = final_pb2.convertRequest(file=text)
+    with open('sample_text.txt', 'r') as file:
+        data = file.read().replace('\n', '')
+    req = final_pb2.convertRequest(file=data)
     rep = stub.doconvert(req)
 elif cmd == 'doQueue':
     req = final_pb2.queueRequest()
