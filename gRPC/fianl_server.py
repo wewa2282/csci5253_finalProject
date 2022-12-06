@@ -16,7 +16,7 @@ import hashlib
 
 redisHost =  os.getenv("REDIS_HOST") or "localhost"
 redisPort =  os.getenv("REDIS_PORT") or "6379"
-
+redisClient = redis.StrictRedis(host=redisHost, port=redisPort, db=0)
 
 minioHost = os.getenv("MINIO_HOST") or "localhost:9000"
 minioUser = os.getenv("MINIO_USER") or "rootuser"
@@ -43,15 +43,16 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
     
      def to_worker(self, data, hash):
         try:
-            r = redis.Redis(host=redisHost, port=redisPort)
+            redisClient = redis.StrictRedis(host=redisHost, port=redisPort, db=0)
             to_json = {
                 'hash': hash,
                 'data': data
             }
             worker_string = jsonpickle.encode(to_json)
-            r.lpush('toWorker', worker_string) 
+            redisClient.lpush('toWorker',  worker_string) 
             return True 
-        except:
+        except Exception as exp:
+            print(exp)
             return False
             
      def doconvert(self,request,context):
