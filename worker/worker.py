@@ -11,6 +11,7 @@ from  minio.deleteobjects import DeleteObject
 import hashlib
 import re
 from gtts import gTTS 
+from io import BytesIO
 
 redisHost =  os.getenv("REDIS_HOST") or "localhost"
 redisPort =  os.getenv("REDIS_PORT") or "6379"
@@ -59,9 +60,11 @@ while True:
 
 
 
-            speech = gTTS(data,lang='en',slow = False)
+            tts = gTTS(data,lang='en',slow = False)
             save_file = f"{hashcode}.mp3"
-            speech.save(save_file)
+            mp3_fp = BytesIO()
+            tts.write_to_fp(mp3_fp)
+            mp3_fp.seek(0)
          
             #update to the output bucket
             if not minioClient.bucket_exists(outpuutBucketName):
@@ -69,7 +72,7 @@ while True:
                 minioClient.make_bucket(outpuutBucketName)
             print("going to output bucket")
             try:
-                minioClient.fput_object(outpuutBucketName, save_file , save_file)
+                minioClient.put_object(outpuutBucketName, save_file , mp3_fp,mp3_fp.getbuffer().nbytes)
             except Exception as exp:
                 print(exp)
 
