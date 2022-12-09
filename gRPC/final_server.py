@@ -118,11 +118,13 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
                 for objectname in contents:
                     if objectname.startswith(hashcode):
                         minioClient.remove_object(outpuutBucketName,objectname)
+            return final_pb2.deleteReply(string="Success" )
         except Exception as exp:
             print(f"error in delete {hashcode} ") 
-    #def doDownload(self, request, context):
-        
+            return final_pb2.deleteReply(string="Fail" )
 
+    #def doDownload(self, request, context):
+            
     
 def serve():    
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
