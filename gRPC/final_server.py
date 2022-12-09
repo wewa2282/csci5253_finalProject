@@ -5,7 +5,7 @@ import grpc
 import final_pb2
 import final_pb2_grpc
 from flask import Flask, request, Response,send_file
-import jsonpickle, pickle
+import jsonpickle, pickle,json
 import platform
 import redis
 import hashlib, requests
@@ -38,10 +38,10 @@ app = Flask(__name__)
 
 
 class RouteGuideServicer(final_pb2_grpc.projectServicer):
-     def __init__(self) -> None:
+    def __init__(self) -> None:
         pass
     
-     def to_worker(self, data, hash):
+    def to_worker(self, data, hash):
         try:
             redisClient = redis.StrictRedis(host=redisHost, port=redisPort, db=0)
             to_json = {
@@ -55,7 +55,7 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
             print(exp)
             return False
             
-     def doconvert(self,request,context):
+    def doconvert(self,request,context):
         content = request.file
                 
         hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
@@ -72,11 +72,10 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
                 'hash': 0
             }
             
-        response_pickled = jsonpickle.encode(return_hash)
-        return final_pb2.convertReply(hash=response_pickled)                
+        return final_pb2.convertReply(hash= str(return_hash) )                
             
         
-     def queue(self,request,context):
+    def queue(self,request,context):
         queue = []
         
         try:
@@ -98,33 +97,50 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
             }
         response_pickled = jsonpickle.encode(return_dic)
         return final_pb2.queueReply(file=response_pickled) 
-    def getBuckObjectNames(bucket, recursive= False):
-        try:
-            if minioClient.bucket_exists(bucket):
-                contents = [x.object_name for x in minioClient.list_objects(bucket,recursive=recursive)]
-            else:
-                contents = []
-        except Exception as exp:
-            print(f"error in getBuckObjectNames({bucket}) ")
-            contents = []
-        return contents
-
 
     def delete(self,request,context):
         hashcode = request.hash
         try:
             if minioClient.bucket_exists(outpuutBucketName):
-                contents = getBuckObjectNames(outpuutBucketName,recursive=True)
+                try:
+                    contents = [x.object_name for x in minioClient.list_objects(outpuutBucketName)]
+                except Exception as exp:
+                    print(f"error in getBuckObjectNames({outpuutBucketName}) ")
+                    print(exp)
+                    return final_pb2.deleteReply(result = "Fail in getting output bucket" )
+                if contents == []:
+                    return final_pb2.deleteReply(result = "file does not exist" )
                 for objectname in contents:
                     if objectname.startswith(hashcode):
                         minioClient.remove_object(outpuutBucketName,objectname)
-            return final_pb2.deleteReply(string="Success" )
+                return final_pb2.deleteReply(result="Success" )
+            else:
+                print(f"output bucket{utpuutBucketName} does not exist ") 
+            
         except Exception as exp:
             print(f"error in delete {hashcode} ") 
-            return final_pb2.deleteReply(string="Fail" )
+            return final_pb2.deleteReply(result="Fail" )
 
-    #def doDownload(self, request, context):
-            
+
+    def doDownload(self, request, context):
+        hashcode = request.hash
+        try:
+            if minioClient.bucket_exists(outpuutBucketName):
+                try:
+                    mp3 = minioClient.get_object(outpuutBucketName,hashcode+".mp3")
+                    
+                    return final_pb2.downloadReply(file=mp3.data)
+                except Exception as exp: 
+                    print(exp)
+                    ret = bytes("fail", 'utf-8')
+                    return final_pb2.downloadReply(file=ret)
+            else:
+                ret = bytes("fail", 'utf-8')
+                return final_pb2.downloadReply(file=ret)
+        except Exception as exp:
+            print(exp)
+            ret = bytes("fail", 'utf-8')
+            return final_pb2.downloadReply(file=ret)
     
 def serve():    
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
