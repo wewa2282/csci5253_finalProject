@@ -98,10 +98,28 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
             }
         response_pickled = jsonpickle.encode(return_dic)
         return final_pb2.queueReply(file=response_pickled) 
-        
-    #def delete(self,request,context):
-        
-        
+    def getBuckObjectNames(bucket, recursive= False):
+        try:
+            if minioClient.bucket_exists(bucket):
+                contents = [x.object_name for x in minioClient.list_objects(bucket,recursive=recursive)]
+            else:
+                contents = []
+        except Exception as exp:
+            print(f"error in getBuckObjectNames({bucket}) ")
+            contents = []
+        return contents
+
+
+    def delete(self,request,context):
+        hashcode = request.hash
+        try:
+            if minioClient.bucket_exists(outpuutBucketName):
+                contents = getBuckObjectNames(outpuutBucketName,recursive=True)
+                for objectname in contents:
+                    if objectname.startswith(hashcode):
+                        minioClient.remove_object(outpuutBucketName,objectname)
+        except Exception as exp:
+            print(f"error in delete {hashcode} ") 
     #def doDownload(self, request, context):
         
 
