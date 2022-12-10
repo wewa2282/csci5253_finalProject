@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtts-worker
+  labels:
+    app: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: gtts-worker
+        image: mariochg/gtts-grpc:latest
+        resources:
+          requests:
+            memory: "15000Mi"
+            cpu: "3000m"
+          limits:
+            memory: "15000Mi"
+            cpu: "3000m"
+
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: MINIO_HOST
+          value: minio:9000

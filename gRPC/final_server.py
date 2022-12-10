@@ -1,18 +1,13 @@
-import base64
 import io, os, sys
 from concurrent import futures
 import grpc
 import final_pb2
 import final_pb2_grpc
-from flask import Flask, request, Response,send_file
 import jsonpickle, pickle,json
-import platform
 import redis
-import hashlib, requests
-import base64
+import hashlib
 from minio import Minio
 from  minio.deleteobjects import DeleteObject
-import hashlib
 
 redisHost =  os.getenv("REDIS_HOST") or "localhost"
 redisPort =  os.getenv("REDIS_PORT") or "6379"
@@ -33,8 +28,6 @@ minioClient = Minio(minioHost,
                secret_key=minioPasswd )
 
 
-# Initialize the Flask application
-app = Flask(__name__)
 
 
 class RouteGuideServicer(final_pb2_grpc.projectServicer):

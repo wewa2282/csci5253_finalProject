@@ -1,0 +1,14 @@
+FROM python:3.9
+
+ADD final_server.py /
+
+RUN pip3 install --upgrade setuptools==49.6.0 redis jsonpickle minio grpcio-tools==1.49.1 gTTS 
+
+CMD mkdir /app
+WORKDIR /app
+
+COPY . /app
+
+EXPOSE 5000
+CMD cd /app && \
+    python3 final_server.py

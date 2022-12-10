@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gtts-grpc
+  labels:
+    app: grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc
+  template:
+    metadata:
+      labels:
+        app: grpc
+    spec:
+      containers:
+      - name: gtts-grpc
+        image: mariochg/gtts-grpc:latest
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: MINIO_HOST
+          value: minio:9000

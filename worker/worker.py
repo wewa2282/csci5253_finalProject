@@ -1,15 +1,8 @@
-import base64
 import io, os, sys
-from concurrent import futures
-from flask import Flask, request, Response,send_file
 import jsonpickle, pickle
-import platform
 import redis
-import hashlib, requests
 from minio import Minio
 from  minio.deleteobjects import DeleteObject
-import hashlib
-import re
 from gtts import gTTS 
 from io import BytesIO
 

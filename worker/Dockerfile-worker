@@ -1,0 +1,13 @@
+FROM python:3.9
+
+ADD worker.py /
+
+RUN pip3 install --upgrade redis jsonpickle minio gTTS
+
+CMD mkdir /app
+WORKDIR /app
+
+COPY . /app
+
+CMD cd /app && \
+    python3 worker.py
