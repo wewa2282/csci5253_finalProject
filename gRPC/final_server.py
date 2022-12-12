@@ -42,18 +42,27 @@ class RouteGuideServicer(final_pb2_grpc.projectServicer):
                 'data': data
             }
             worker_string = jsonpickle.encode(to_json)
+            print(worker_string)
             redisClient.lpush('toWorker',  worker_string) 
+            print('done')
             return True 
         except Exception as exp:
+            print('got here')
             print(exp)
             return False
             
     def doconvert(self,request,context):
         content = request.file
+
+        print(content)
                 
         hash = hashlib.sha256(content.encode('utf-8')).hexdigest()
+
+        print('hash')
             
         operation = self.to_worker(content, hash) 
+
+        print(operation)
             
         if operation: 
             return_hash = {
@@ -139,7 +148,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     final_pb2_grpc.add_projectServicer_to_server(RouteGuideServicer(), server)
     
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('[::]:5000')
     server.start()
     server.wait_for_termination()
    

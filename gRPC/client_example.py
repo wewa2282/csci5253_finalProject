@@ -19,7 +19,7 @@ addr = f"http://{host}:5000"
 if len(sys.argv) >3:
         hashcode = sys.argv[3]
 
-channel = grpc.insecure_channel('{}:50051'.format(host))
+channel = grpc.insecure_channel('{}:5000'.format(host))
 stub = final_pb2_grpc.projectStub(channel)
 
 if cmd == 'doConvert':
@@ -31,6 +31,7 @@ if cmd == 'doConvert':
 elif cmd == 'doQueue':
     req = final_pb2.queueRequest()
     rep = stub.queue(req)
+    print(rep)
 elif cmd == 'delete':
     req = final_pb2.deleteRequest(hash = hashcode)
     rep = stub.delete(req)

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: gtts-worker
-        image: mariochg/gtts-grpc:latest
+        image: mariochg/gtts-worker:latest
         resources:
           requests:
             memory: "15000Mi"
@@ -28,5 +28,7 @@ spec:
         env:
         - name: REDIS_HOST
           value: redis
+        - name: REDIS_PORT
+          value: '6379'
         - name: MINIO_HOST
           value: minio:9000
